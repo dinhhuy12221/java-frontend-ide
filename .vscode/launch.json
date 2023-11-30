@@ -3,6 +3,34 @@
   "configurations": [
     {
       "type": "java",
+      "name": "gbc",
+      "request": "launch",
+      "mainClass": "gbc",
+      "projectName": "Client_6728ccac"
+    },
+    {
+      "type": "java",
+      "name": "ClientUI",
+      "request": "launch",
+      "mainClass": "Client.ui.ClientUI",
+      "projectName": "Client_6728ccac"
+    },
+    {
+      "type": "java",
+      "name": "SSCCE",
+      "request": "launch",
+      "mainClass": "SSCCE",
+      "projectName": "Client_6728ccac"
+    },
+    {
+      "type": "java",
+      "name": "GridTest",
+      "request": "launch",
+      "mainClass": "GridTest",
+      "projectName": "Client_6728ccac"
+    },
+    {
+      "type": "java",
       "name": "Main",
       "request": "launch",
       "mainClass": "Main",
@@ -15,8 +43,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "s:/",
-      "program": "s:/build/Debug/outDebug",
+      "cwd": "s:/StudyFiles/SGU/2023-2024-HK1/CSTTNT/TH/Week_7",
+      "program": "s:/StudyFiles/SGU/2023-2024-HK1/CSTTNT/TH/Week_7/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

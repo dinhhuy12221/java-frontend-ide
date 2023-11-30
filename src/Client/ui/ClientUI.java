@@ -25,7 +25,6 @@ import Client.socket.client;
 import Object.Code;
 import Object.CodeResult;
 
-import java.awt.TextArea;
 import java.awt.RenderingHints.Key;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -47,22 +46,18 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
-import java.awt.Font;
-import java.awt.HeadlessException;
-import java.awt.Image;
-import java.awt.Color;
-import java.awt.Cursor;
-
 public class ClientUI {
 
 	private JFrame frame;
 	private JPanel contentPane;
+	private GridBagLayout layout;
+	GridBagConstraints gbc;
+	private JLayeredPane layeredPane;
+	private LoadingScreen loadingScreen;
 	private RSyntaxTextArea textArea_Src;
 	private RSyntaxTextArea textArea_Input;
 	private RSyntaxTextArea textArea_Result;
 	private ComboSuggestion cb;
-	private JLayeredPane layeredPane;
-	private LoadingScreen loadingScreen;
 	private Button btnRun;
 	private Button btnSave;
 	private Button btnUpload;
@@ -76,13 +71,13 @@ public class ClientUI {
 	/**
 	 * Launch the application.
 	 */
-	// public static void main(String[] args) {
-	// try {
-	// ClientUI frame = new ClientUI();
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
+	public static void main(String[] args) {
+	try {
+		ClientUI frame = new ClientUI();
+		} catch (Exception e) {
+		e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Create the frame.
@@ -103,21 +98,27 @@ public class ClientUI {
 		frame = new JFrame();
 		frame.setTitle("Code Editor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(null);
-		frame.setBounds(100, 100, 1270, 781);
+		// frame.setLayout(null);
+		frame.setSize( 1270, 781);
+		frame.setMinimumSize(new Dimension(500,500));
 		frame.setLocationRelativeTo(null);
-
+		
 		contentPane = new JPanel();
-		contentPane.setLayout(null);
 		contentPane.setBackground(new Color(240, 240, 240));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setBounds(0, 0, 1276, 781);
+		layout = new GridBagLayout();
+		gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.NONE;
+		contentPane.setLayout(layout);
+		frame.setContentPane(contentPane);
 
-		layeredPane = new JLayeredPane();
-		layeredPane.setLayout(null);
-		layeredPane.setOpaque(true);
-		layeredPane.setBackground(new Color(255, 255, 255, 60));
-		frame.setContentPane(layeredPane);
+		// layeredPane = new JLayeredPane();
+		// // layeredPane.setLayout(new BorderLayout());
+		// layeredPane.setOpaque(true);
+		// layeredPane.setBackground(new Color(255, 255, 255, 60));
+		// layeredPane.setPreferredSize(new Dimension(1270, 781));
+		// layeredPane.setMaximumSize(contentPane.getPreferredSize());
+		// frame.setContentPane(layeredPane);
 		loadingScreen = new LoadingScreen();
 
 		textArea_Src = new RSyntaxTextArea(20, 60);
@@ -125,21 +126,55 @@ public class ClientUI {
 		textArea_Src.setCodeFoldingEnabled(true);
 		textArea_Src.setFont(new Font("", Font.PLAIN, 15));
 		RTextScrollPane sp = new RTextScrollPane(textArea_Src);
-		sp.setBounds(10, 59, 900, 487);
+		// sp.setPreferredSize(new Dimension(1000,300));
+		sp.setMinimumSize(sp.getPreferredSize());
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridy = 1;
+		gbc.gridx = 0;
+		layout.setConstraints(sp, gbc);
+		// sp.setBounds(10, 59, 900, 487);
 		contentPane.add(sp);
 
-		textArea_Input = new RSyntaxTextArea();
+		textArea_Input = new RSyntaxTextArea(20, 20);
 		textArea_Input.setHighlightCurrentLine(false);
 		textArea_Input.setFont(new Font("Dialog", Font.ITALIC, 15));
 		RTextScrollPane sp1 = new RTextScrollPane(textArea_Input);
-		sp1.setBounds(920, 59, 320, 487);
+		// sp1.setPreferredSize(new Dimension(200,300));
+		sp1.setMinimumSize(sp1.getPreferredSize());
+		// sp1.setPreferredSize(new Dimension(100,100));
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridy = 1;
+		gbc.gridx = 1;
+		// gbc.weightx = 1;
+		layout.setConstraints(sp1, gbc);
 		contentPane.add(sp1);
 
-		textArea_Result = new RSyntaxTextArea();
+		textArea_Result = new RSyntaxTextArea(10,100);
 		textArea_Result.setHighlightCurrentLine(false);
 		textArea_Result.setFont(new Font("Dialog", Font.ITALIC, 14));
 		textArea_Result.setEditable(false);
 		RTextScrollPane sp2 = new RTextScrollPane(textArea_Result);
+		// sp2.setPreferredSize(new Dimension(800,100));
+		sp2.setMinimumSize(sp2.getPreferredSize());
+		gbc.anchor = GridBagConstraints.LAST_LINE_START;
+		gbc.gridy = 2;
+		gbc.gridx = 0;
+		gbc.gridwidth = 3;
+		layout.setConstraints(sp2, gbc);
+		textArea_Result.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (textArea_Result.getText().length() > 100000)
+					e.consume();
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+
+		});
 		sp2.setBounds(10, 550, 1230, 180);
 		contentPane.add(sp2);
 		// textArea_Result.setEnabled(false);
@@ -201,12 +236,19 @@ public class ClientUI {
 		btnRun.setIcon(new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\logo\\icons8-video-48.png")
 				.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
 		btnRun.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnRun.setPreferredSize(new Dimension(80,30));
+		btnRun.setMinimumSize(btnRun.getPreferredSize());
 		btnRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				run();	
 			}
 		});
-		btnRun.setBounds(630, 30, 80, 25);
+		// btnRun.setBounds(630, 30, 80, 25);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(35, 530, 0, 0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		layout.setConstraints(btnRun, gbc);
 		contentPane.add(btnRun);
 
 		btnSave = new Button("Save");
@@ -217,6 +259,8 @@ public class ClientUI {
 		btnSave.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSave.setForeground(Color.white);
 		btnSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnSave.setPreferredSize(new Dimension(100,30));
+		btnSave.setMinimumSize(btnSave.getPreferredSize());
 		// btnSave.setIcon(new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\logo\\stop-button.png")
 		// 		.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
 		btnSave.addActionListener(new ActionListener() {
@@ -260,7 +304,12 @@ public class ClientUI {
 				}
 			}
 		});
-		btnSave.setBounds(720, 30, 80, 25);
+		// btnSave.setBounds(720, 30, 80, 25);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(35, 620, 0, 0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		layout.setConstraints(btnSave, gbc);
 		contentPane.add(btnSave);
 
 		btnUpload = new Button("Upload");
@@ -271,6 +320,8 @@ public class ClientUI {
 		btnUpload.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnUpload.setForeground(Color.white);
 		btnUpload.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnUpload.setPreferredSize(new Dimension(100,30));
+		btnUpload.setMinimumSize(btnUpload.getPreferredSize());
 		// btnUpload.setIcon(new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\logo\\upload.png")
 		// 		.getImage().getScaledInstance(12, 12, Image.SCALE_SMOOTH)));
 		btnUpload.addActionListener(new ActionListener() {
@@ -306,7 +357,12 @@ public class ClientUI {
 				}
 			}
 		});
-		btnUpload.setBounds(810, 30, 100, 25);
+		// btnUpload.setBounds(810, 30, 100, 25);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(35, 730, 0, 0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		layout.setConstraints(btnUpload, gbc);
 		contentPane.add(btnUpload);
 
 		cb = new ComboSuggestion();
@@ -328,58 +384,59 @@ public class ClientUI {
 
 			}
 		});
-		cb.setLocation(10, 25);
+		// cb.setLocation(10, 25);
 		cb.setModel(new DefaultComboBoxModel(new String[] { "C", "Python", "Java", "Javascript"}));
 		cb.setEditable(false);
-		cb.setSize(125, 30);
+		cb.setPreferredSize(new Dimension(100,30));
+		cb.setMinimumSize(cb.getPreferredSize());
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(40, 0, 0, 0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		layout.setConstraints(cb, gbc);
 		contentPane.add(cb);
 
 		connectionStatus = new JLabel();
-		connectionStatus.setBounds(1050, 18, 150, 30);
+		connectionStatus.setBounds(980, 18, 250, 30);
 		connectionStatus.setFont(new Font("", Font.PLAIN, 13));
-		connectionStatus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		connectionStatus.setText("<HTML><nobr><U>Disconnected with server " + clientSocket.getHostName() +"</U></nobr></HTML>");
+		connectionStatus.setForeground(Color.red);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(20, 900, 0, 0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		layout.setConstraints(connectionStatus, gbc);
 		contentPane.add(connectionStatus);
-		connectionStatus.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(!clientSocket.connect()) {
-					connectServer();
-				}
-			}
+		// connectionStatus.addMouseListener(new MouseListener() {
+		// 	@Override
+		// 	public void mouseClicked(MouseEvent e) {
+		// 		connectServer();
+		// 	}
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
+		// 	@Override
+		// 	public void mousePressed(MouseEvent e) {
+		// 	}
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
+		// 	@Override
+		// 	public void mouseReleased(MouseEvent e) {
+		// 	}
 
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
+		// 	@Override
+		// 	public void mouseEntered(MouseEvent e) {
+		// 	}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
+		// 	@Override
+		// 	public void mouseExited(MouseEvent e) {
+		// 	}
 
-		});
-
-		Timer timer = new Timer(10000, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// connectionChecking();
-			}
-			
-		});
-		timer.start();
-
-		layeredPane.add(contentPane, 1, 0);
-		layeredPane.add(loadingScreen, 2, 0);
-
-		frame.setVisible(true);
+		// });
 		connectServer();
+		checkConnection();
+
+		// layeredPane.add(contentPane, 1, 0);
+		// layeredPane.add(loadingScreen, 2, 0);
+		frame.setVisible(true);
+		frame.pack();
 
 	}
 
@@ -399,9 +456,6 @@ public class ClientUI {
 				CodeResult result = (CodeResult) clientSocket.receive();
 				textArea_Src.setText(result.getFormattedSrc());
 				textArea_Result.setText(result.getExecResult());
-				// String rec = (String) clientSocket.receive();
-				// System.out.println(rec);
-				// textArea_Result.setText(rec);
 				return true;
 			}
 
@@ -409,32 +463,23 @@ public class ClientUI {
 				try {
 					loadingScreen.setVisible(false);
 					btnRun.setEnabled(true);
-					// textArea_Result.setEnabled(true
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		};
 		swingWorker.execute();
-		// } else {
-		// 	Notification panel = new Notification(
-		// 		frame, Notification.Type.WARNING, Notification.Location.TOP_RIGHT,
-		// 			"Unable to connect to server");
-		// 	panel.showNotification();
-		// }
-
 	}
 	
 	private void connectServer() {
-		JOptionPane optionPane = new JOptionPane();
-		clientSocket.setHostName(optionPane.showInputDialog(frame, "Server IP", clientSocket.getHostName()));
-		loadingScreen.setVisible(true);
-
 		SwingWorker swingWorker = new SwingWorker<Boolean, Void>() {
 			@Override
 			protected Boolean doInBackground() throws Exception {
+				JOptionPane optionPane = new JOptionPane();
+				String hostName = optionPane.showInputDialog(frame, "Server IP", clientSocket.getHostName());
+				clientSocket.setHostName(hostName);
+				loadingScreen.setVisible(true);
 				clientSocket = new client(clientSocket.getHostName(), 1234);
-				return clientSocket.connect();
+				return clientSocket.isConnected();
 			}
 
 			@Override
@@ -443,15 +488,15 @@ public class ClientUI {
 					loadingScreen.setVisible(false);
 					if (get()) {
 						Notification panel = new Notification(frame, Notification.Type.SUCCESS,
-								Notification.Location.TOP_RIGHT, "Connected to server");
+								Notification.Location.CENTER, "Connected to server");
 						panel.showNotification();
-						connectionStatus.setText("<HTML><U>Connected</U></HTML>");
+						connectionStatus.setText("<HTML><nobr><U>Connected with server " + clientSocket.getHostName() + "</U></nobr></HTML>");
 						connectionStatus.setForeground(Color.green);
 					} else {
 						Notification panel = new Notification(frame, Notification.Type.WARNING,
-								Notification.Location.TOP_RIGHT, "Unable to connect to server");
+								Notification.Location.CENTER, "Unable to connect to server");
 						panel.showNotification();
-						connectionStatus.setText("<HTML><U>Disconnected.Click here to reconnect</U></HTML>");
+						connectionStatus.setText("<HTML><nobr><U>Disconnected with server " + clientSocket.getHostName() +"</U></nobr></HTML>");
 						connectionStatus.setForeground(Color.red);
 					}
 				} catch (HeadlessException | InterruptedException | ExecutionException e) {
@@ -464,37 +509,55 @@ public class ClientUI {
 		swingWorker.execute();
 	}
 
-	private void connectionChecking() {
-		SwingWorker swingWorker = new SwingWorker<Boolean, Void>() {
-			@Override
-			protected Boolean doInBackground() throws Exception {
-				clientSocket = new client(clientSocket.getHostName(), 1234);
-				return clientSocket.connect();
-			}
+	private void checkConnection() {
+		Timer timer = new Timer(3000, new ActionListener() {
 
 			@Override
-			protected void done() {
-				try {
-					if (get()) {
-						// Notification panel = new Notification(frame, Notification.Type.SUCCESS,
-						// 		Notification.Location.TOP_RIGHT, "Connected to server");
-						// panel.showNotification();
-						connectionStatus.setText("<HTML><U>Connected</U></HTML>");
-						connectionStatus.setForeground(Color.green);
-					} else {
-						// Notification panel = new Notification(frame, Notification.Type.WARNING,
-						// 		Notification.Location.TOP_RIGHT, "Unable to connect to server");
-						// panel.showNotification();
-						connectionStatus.setText("<HTML><U>Disconnected.Click here to reconnect</U></HTML>");
-						connectionStatus.setForeground(Color.red);
-					}
-				} catch (HeadlessException | InterruptedException | ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			public void actionPerformed(ActionEvent e) {
+				if (clientSocket.isConnected()) {
+					connectionStatus.setText("<HTML><nobr><U>Connected with server " + clientSocket.getHostName() + "</U></nobr></HTML>");
+					connectionStatus.setForeground(Color.green);
+				} else {
+					connectionStatus.setText("<HTML><nobr><U>Disconnected with server " + clientSocket.getHostName() +"</U></nobr></HTML>");
+					connectionStatus.setForeground(Color.red);
+					clientSocket = new client(clientSocket.getHostName(), 1234);
 				}
-			}
-		};
-
-		swingWorker.execute();
+			}	
+		});
+		timer.start();
 	}
+
+	// private void connectionChecking() {
+	// 	SwingWorker swingWorker = new SwingWorker<Boolean, Void>() {
+	// 		@Override
+	// 		protected Boolean doInBackground() throws Exception {
+	// 			clientSocket = new client(clientSocket.getHostName(), 1234);
+	// 			return clientSocket.connect();
+	// 		}
+
+	// 		@Override
+	// 		protected void done() {
+	// 			try {
+	// 				if (get()) {
+	// 					// Notification panel = new Notification(frame, Notification.Type.SUCCESS,
+	// 					// 		Notification.Location.TOP_RIGHT, "Connected to server");
+	// 					// panel.showNotification();
+	// 					connectionStatus.setText("<HTML><U>Connected</U></HTML>");
+	// 					connectionStatus.setForeground(Color.green);
+	// 				} else {
+	// 					// Notification panel = new Notification(frame, Notification.Type.WARNING,
+	// 					// 		Notification.Location.TOP_RIGHT, "Unable to connect to server");
+	// 					// panel.showNotification();
+	// 					connectionStatus.setText("<HTML><U>Disconnected.Click here to reconnect</U></HTML>");
+	// 					connectionStatus.setForeground(Color.red);
+	// 				}
+	// 			} catch (HeadlessException | InterruptedException | ExecutionException e) {
+	// 				// TODO Auto-generated catch block
+	// 				e.printStackTrace();
+	// 			}
+	// 		}
+	// 	};
+
+	// 	swingWorker.execute();
+	// }
 }

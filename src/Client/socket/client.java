@@ -20,6 +20,7 @@ public class client {
 	public client(String hostName, int port) {
 		this.hostName = hostName;
 		this.port = port;
+		connect();
 	}
 	
 	public client() {
@@ -33,6 +34,7 @@ public class client {
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 			generateKey();
+			System.out.println(1);
 			return true;
 		} catch (ConnectException e) {
 			System.out.println("[Notification] Diconnect to server");
@@ -98,29 +100,51 @@ public class client {
 			byte[] bytes = encryption.encryptData((Code) object);
 			this.out.writeObject(bytes);
 			this.out.flush();
+		} catch (java.net.SocketException e) {
+			System.out.println("Lost connection");
+		} catch (java.lang.NullPointerException e){
+			System.out.println("Error in encryption");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void send(String str) {
-		try {
-			byte[] bytes = encryption.encryptData(str);
-			this.out.writeObject(bytes);
-			this.out.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	// public void send(String str) {
+	// 	try {
+	// 		byte[] bytes = encryption.encryptData(str);
+	// 		this.out.writeObject(bytes);
+	// 		this.out.flush();
+	// 	} catch (java.net.SocketException e) {
+	// 		System.out.println("Lost connection");
+	// 	}  catch (Exception e) {
+	// 		e.printStackTrace();
+	// 	}
+	// }
 
 	public Object receive() {
 		try {
 			byte[] bytes = (byte[]) this.in.readObject();
 			Object object = (Object) encryption.decryptData(bytes);
 			return object;
+		} catch (java.net.SocketException e) {
+			System.out.println("Lost connection");
+		} catch (java.lang.NullPointerException e){
+			System.out.println("Error in encryption");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+		}
+		return null;
+	}
+
+	public boolean isConnected() {
+		try {
+			if(new Socket(this.hostName, this.port).isConnected()) 
+				return true;
+			else 
+				return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
 		}
 	}
 }
