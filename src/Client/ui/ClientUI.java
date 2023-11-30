@@ -15,6 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.JTextComponent.KeyBinding;
 
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaUI;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -124,6 +125,7 @@ public class ClientUI {
 		textArea_Src = new RSyntaxTextArea(20, 60);
 		textArea_Src.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
 		textArea_Src.setCodeFoldingEnabled(true);
+		textArea_Src.setLineWrap(true);
 		textArea_Src.setFont(new Font("", Font.PLAIN, 15));
 		RTextScrollPane sp = new RTextScrollPane(textArea_Src);
 		// sp.setPreferredSize(new Dimension(1000,300));
@@ -148,7 +150,6 @@ public class ClientUI {
 		// gbc.weightx = 1;
 		layout.setConstraints(sp1, gbc);
 		contentPane.add(sp1);
-
 		textArea_Result = new RSyntaxTextArea(10,100);
 		textArea_Result.setHighlightCurrentLine(false);
 		textArea_Result.setFont(new Font("Dialog", Font.ITALIC, 14));
@@ -432,7 +433,6 @@ public class ClientUI {
 		// });
 		connectServer();
 		checkConnection();
-
 		// layeredPane.add(contentPane, 1, 0);
 		// layeredPane.add(loadingScreen, 2, 0);
 		frame.setVisible(true);

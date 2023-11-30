@@ -20,7 +20,7 @@ public class client {
 	public client(String hostName, int port) {
 		this.hostName = hostName;
 		this.port = port;
-		connect();
+		this.connect();
 	}
 	
 	public client() {
@@ -28,20 +28,18 @@ public class client {
 		this.port = 0;
 	}
 
-	public boolean connect() {
+	public void connect() {
 		try {
 			this.socket = new Socket(this.hostName, this.port);
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 			generateKey();
 			System.out.println(1);
-			return true;
 		} catch (ConnectException e) {
 			System.out.println("[Notification] Diconnect to server");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 	public int getPort() {
@@ -138,6 +136,7 @@ public class client {
 
 	public boolean isConnected() {
 		try {
+			// Socket s = new Socket(this.hostName, this.port); 
 			if(new Socket(this.hostName, this.port).isConnected()) 
 				return true;
 			else 
