@@ -108,8 +108,8 @@ public class ClientUI {
 		frame.setLocationRelativeTo(null);
 		
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(240, 240, 240));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(255, 255, 255));
+		// contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		layout = new GridBagLayout();
 		gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.NONE;
@@ -125,7 +125,9 @@ public class ClientUI {
 		// frame.setContentPane(layeredPane);
 		loadingScreen = new LoadingScreen();
 
-		textArea_Src = new RSyntaxTextArea(20, 60);
+		textArea_Src = new RSyntaxTextArea(21, 60);
+		// textArea_Src.setBackground(new Color(40,40,40));
+		// textArea_Src.setForeground(new Color(66, 135, 245));
 		textArea_Src.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C);
 		textArea_Src.setCodeFoldingEnabled(true);
 		textArea_Src.setLineWrap(true);
@@ -135,34 +137,54 @@ public class ClientUI {
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.gridy = 1;
 		gbc.gridx = 0;
-		gbc.insets = new Insets(0, 0, 0, 10);
+		gbc.insets = new Insets(0, 0, 0, 0);
 		layout.setConstraints(sp, gbc);
 		contentPane.add(sp);
 
+		
 		textArea_Input = new RSyntaxTextArea(20, 20);
 		textArea_Input.setHighlightCurrentLine(false);
 		textArea_Input.setFont(new Font("Dialog", Font.ITALIC, 15));
 		RTextScrollPane sp1 = new RTextScrollPane(textArea_Input);
 		sp1.setMinimumSize(sp1.getPreferredSize());
+		JLabel label1 = new JLabel("  INPUT");
+		label1.setFont(new Font("Dialog", Font.BOLD, 16));
+		label1.setForeground(new Color(255,255,255));
+		JPanel panel1 = new JPanel();
+		panel1.setBorder(BorderFactory.createEmptyBorder(0, 0,0,0));
+		panel1.setLayout(new BorderLayout());
+		panel1.setMinimumSize(new Dimension(300,300));
+		panel1.setBackground(new Color(66, 135, 245));
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.gridy = 1;
 		gbc.gridx = 1;
-		layout.setConstraints(sp1, gbc);
-		contentPane.add(sp1);
-		
+		panel1.add(label1, BorderLayout.NORTH);
+		panel1.add(sp1, BorderLayout.CENTER);
+		layout.setConstraints(panel1, gbc);
+		contentPane.add(panel1);
 
-		textArea_Result = new RSyntaxTextArea(10,101);
+		textArea_Result = new RSyntaxTextArea(10,100);
 		textArea_Result.setHighlightCurrentLine(false);
 		textArea_Result.setFont(new Font("Dialog", Font.ITALIC, 14));
 		textArea_Result.setEditable(false);
 		RTextScrollPane sp2 = new RTextScrollPane(textArea_Result);
 		sp2.setMinimumSize(sp2.getPreferredSize());
+		JLabel label2 = new JLabel("  OUTPUT");
+		label2.setFont(new Font("Dialog", Font.BOLD, 16));
+		label2.setForeground(new Color(255,255,255));
+		JPanel panel2 = new JPanel();
+		panel2.setBorder(BorderFactory.createEmptyBorder(0, 0,0,0));
+		panel2.setLayout(new BorderLayout());
+		panel2.setBackground(new Color(66, 135, 245));
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
-		gbc.gridy = 3;
+		gbc.gridy = 2;
 		gbc.gridx = 0;
 		gbc.gridwidth = 3;
-		layout.setConstraints(sp2, gbc);
-		contentPane.add(sp2);
+		gbc.insets = new Insets(0, 0, 0, 0);
+		panel2.add(label2,  BorderLayout.NORTH);
+		panel2.add(sp2,  BorderLayout.CENTER);
+		layout.setConstraints(panel2, gbc);
+		contentPane.add(panel2);
 		// textArea_Result.setEnabled(false);
 		// SwingWorker swingWorker = new SwingWorker<Void, Void>() {
 		// 	@Override
@@ -382,36 +404,45 @@ public class ClientUI {
 		cb.setPreferredSize(new Dimension(120,30));
 		cb.setMinimumSize(cb.getPreferredSize());
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.insets = new Insets(30, 0, 10, 0);
+		gbc.insets = new Insets(30, 140, 10, 0);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		layout.setConstraints(cb, gbc);
 		contentPane.add(cb);
 
-		JLabel title1 = new JLabel("   INPUT");
-		title1.setOpaque(true);
-		title1.setBackground(new Color(200,200,200));
-		title1.setFont(new Font("Dialog", Font.BOLD, 16));
-		title1.setPreferredSize(new Dimension(305,25));
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.gridy = 0;
-		gbc.gridx = 1;
-		gbc.insets = new Insets(46, 0,0, 0);
-		layout.setConstraints(title1, gbc);
-		contentPane.add(title1);
-
-		JLabel title2 = new JLabel("   OUTPUT");
-		title2.setOpaque(true);
-		title2.setBackground(new Color(200,200,200));
-		title2.setFont(new Font("Dialog", Font.BOLD, 16));
-		title2.setPreferredSize(new Dimension(1157,25));
-		gbc.anchor = GridBagConstraints.LAST_LINE_START;
-		gbc.gridy = 2;
+		JLabel selectText = new JLabel("SELECT LANGUAGE");
+		selectText.setFont(new Font("Tahoma", Font.CENTER_BASELINE, 13));
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.insets = new Insets(35, 10, 10, 0);
 		gbc.gridx = 0;
-		gbc.gridwidth = 3;
-		gbc.insets = new Insets(10, 0, 0, 0);
-		layout.setConstraints(title2, gbc);
-		contentPane.add(title2);
+		gbc.gridy = 0;
+		layout.setConstraints(selectText, gbc);
+		contentPane.add(selectText);
+
+		// JLabel title1 = new JLabel("   INPUT");
+		// title1.setOpaque(true);
+		// title1.setBackground(new Color(200,200,200));
+		// title1.setFont(new Font("Dialog", Font.BOLD, 16));
+		// title1.setPreferredSize(new Dimension(305,25));
+		// gbc.anchor = GridBagConstraints.LINE_START;
+		// gbc.gridy = 0;
+		// gbc.gridx = 1;
+		// gbc.insets = new Insets(46, 0,0, 0);
+		// layout.setConstraints(title1, gbc);
+		// contentPane.add(title1);
+
+		// JLabel title2 = new JLabel("   OUTPUT");
+		// title2.setOpaque(true);
+		// title2.setBackground(new Color(200,200,200));
+		// title2.setFont(new Font("Dialog", Font.BOLD, 16));
+		// title2.setPreferredSize(new Dimension(1157,25));
+		// gbc.anchor = GridBagConstraints.LAST_LINE_START;
+		// gbc.gridy = 2;
+		// gbc.gridx = 0;
+		// gbc.gridwidth = 3;
+		// gbc.insets = new Insets(10, 0, 0, 0);
+		// layout.setConstraints(title2, gbc);
+		// contentPane.add(title2);
 		// connectionStatus = new JLabel();
 		// connectionStatus.setBounds(980, 18, 250, 30);
 		// connectionStatus.setFont(new Font("", Font.PLAIN, 13));
@@ -478,10 +509,16 @@ public class ClientUI {
 
 			protected void done() {
 				try {
-					loadingScreen.setVisible(false);
-					btnRun.setEnabled(true);
-					textArea_Result.setEditable(true);
-					textArea_Input.setEditable(true);
+					if (get()) {
+						loadingScreen.setVisible(false);
+						btnRun.setEnabled(true);
+						textArea_Result.setEditable(true);
+						textArea_Input.setEditable(true);
+					} else {
+						Notification panel = new Notification(frame, Notification.Type.WARNING,
+						Notification.Location.CENTER, "Unable to connect to server");
+						panel.showNotification();
+					}
 				} catch (Exception e) {
 				}
 			}
