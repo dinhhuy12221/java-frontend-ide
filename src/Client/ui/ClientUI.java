@@ -55,7 +55,7 @@ public class ClientUI {
 	private JFrame frame;
 	private JPanel contentPane;
 	private GridBagLayout layout;
-	GridBagConstraints gbc;
+	private GridBagConstraints gbc;
 	private JLayeredPane layeredPane;
 	private LoadingScreen loadingScreen;
 	private RSyntaxTextArea textArea_Src;
@@ -509,17 +509,20 @@ public class ClientUI {
 
 			protected void done() {
 				try {
-					if (get()) {
-						loadingScreen.setVisible(false);
-						btnRun.setEnabled(true);
-						textArea_Result.setEditable(true);
-						textArea_Input.setEditable(true);
-					} else {
+					loadingScreen.setVisible(false);
+					btnRun.setEnabled(true);
+					textArea_Result.setEditable(true);
+					textArea_Input.setEditable(true);
+					if (!get()) {
 						Notification panel = new Notification(frame, Notification.Type.WARNING,
 						Notification.Location.CENTER, "Unable to connect to server");
 						panel.showNotification();
 					}
 				} catch (Exception e) {
+					Notification panel = new Notification(frame, Notification.Type.WARNING,
+					Notification.Location.CENTER, "Unable to connect to server");
+					panel.showNotification();
+					
 				}
 			}
 		};
@@ -530,8 +533,7 @@ public class ClientUI {
 		SwingWorker swingWorker = new SwingWorker<Boolean, Void>() {
 			@Override
 			protected Boolean doInBackground() throws Exception {
-				JOptionPane optionPane = new JOptionPane();
-				String hostName = optionPane.showInputDialog(frame, "Server IP", clientSocket.getHostName());
+				String hostName = JOptionPane.showInputDialog(frame, "Server IP", "localhost");
 				clientSocket.setHostName(hostName);
 				loadingScreen.setVisible(true);
 				clientSocket = new client(clientSocket.getHostName(), 1234);

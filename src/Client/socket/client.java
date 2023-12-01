@@ -34,7 +34,7 @@ public class client {
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 			generateKey();
-		} catch (ConnectException e) {
+		} catch (ConnectException | java.net.UnknownHostException e) {
 			System.out.println("[Notification] Diconnect to server");
 		} catch (Exception e) {
 			e.printStackTrace();
