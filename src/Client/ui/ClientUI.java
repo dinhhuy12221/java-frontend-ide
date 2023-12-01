@@ -39,11 +39,14 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.nio.file.Files;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -128,26 +131,21 @@ public class ClientUI {
 		textArea_Src.setLineWrap(true);
 		textArea_Src.setFont(new Font("", Font.PLAIN, 15));
 		RTextScrollPane sp = new RTextScrollPane(textArea_Src);
-		// sp.setPreferredSize(new Dimension(1000,300));
 		sp.setMinimumSize(sp.getPreferredSize());
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.gridy = 1;
 		gbc.gridx = 0;
 		layout.setConstraints(sp, gbc);
-		// sp.setBounds(10, 59, 900, 487);
 		contentPane.add(sp);
 
 		textArea_Input = new RSyntaxTextArea(20, 20);
 		textArea_Input.setHighlightCurrentLine(false);
 		textArea_Input.setFont(new Font("Dialog", Font.ITALIC, 15));
 		RTextScrollPane sp1 = new RTextScrollPane(textArea_Input);
-		// sp1.setPreferredSize(new Dimension(200,300));
 		sp1.setMinimumSize(sp1.getPreferredSize());
-		// sp1.setPreferredSize(new Dimension(100,100));
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.gridy = 1;
 		gbc.gridx = 1;
-		// gbc.weightx = 1;
 		layout.setConstraints(sp1, gbc);
 		contentPane.add(sp1);
 		textArea_Result = new RSyntaxTextArea(10,100);
@@ -155,27 +153,12 @@ public class ClientUI {
 		textArea_Result.setFont(new Font("Dialog", Font.ITALIC, 14));
 		textArea_Result.setEditable(false);
 		RTextScrollPane sp2 = new RTextScrollPane(textArea_Result);
-		// sp2.setPreferredSize(new Dimension(800,100));
 		sp2.setMinimumSize(sp2.getPreferredSize());
 		gbc.anchor = GridBagConstraints.LAST_LINE_START;
 		gbc.gridy = 2;
 		gbc.gridx = 0;
 		gbc.gridwidth = 3;
 		layout.setConstraints(sp2, gbc);
-		textArea_Result.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyPressed(KeyEvent e) {}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if (textArea_Result.getText().length() > 100000)
-					e.consume();
-			}
-			@Override
-			public void keyReleased(KeyEvent e) {}
-
-		});
 		sp2.setBounds(10, 550, 1230, 180);
 		contentPane.add(sp2);
 		// textArea_Result.setEnabled(false);
@@ -387,8 +370,14 @@ public class ClientUI {
 		});
 		// cb.setLocation(10, 25);
 		cb.setModel(new DefaultComboBoxModel(new String[] { "C", "Python", "Java", "Javascript"}));
+		Map<Object, Icon> icons = new HashMap<Object, Icon>();	
+		icons.put("C", new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\img\\letter-c.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
+		icons.put("Python", new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\img\\python.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
+		icons.put("Java", new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\img\\java.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
+		icons.put("Javascript", new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\img\\js.png").getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH)));
+		cb.setRenderer(new IconListRenderer(icons));
 		cb.setEditable(false);
-		cb.setPreferredSize(new Dimension(100,30));
+		cb.setPreferredSize(new Dimension(120,30));
 		cb.setMinimumSize(cb.getPreferredSize());
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.insets = new Insets(40, 0, 0, 0);
@@ -444,6 +433,8 @@ public class ClientUI {
 		// if (clientSocket.) {
 		loadingScreen.setVisible(true);
 		btnRun.setEnabled(false);
+		textArea_Result.setEditable(false);
+		textArea_Input.setEditable(false);
 		SwingWorker swingWorker = new SwingWorker<Boolean, Void>() {
 			Code code;
 			@Override
@@ -463,6 +454,8 @@ public class ClientUI {
 				try {
 					loadingScreen.setVisible(false);
 					btnRun.setEnabled(true);
+					textArea_Result.setEditable(true);
+					textArea_Input.setEditable(true);
 				} catch (Exception e) {
 				}
 			}

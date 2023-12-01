@@ -60,14 +60,6 @@ public class client {
 
 	private void generateKey() {
 		try {
-			// encryption = new encryption();
-			// this.out.writeObject(encryption.getKeyPair().getPublic());
-			// this.out.flush();
-
-			// byte[] encryptedKey = (byte[]) this.in.readObject();
-			// encryption.setEncryptedKey(encryptedKey);
-			// encryption.decryptKey();
-
 			encryption = new encryption();
 			encryption.setPublicKey((PublicKey) this.in.readObject());
 
@@ -107,18 +99,6 @@ public class client {
 		}
 	}
 
-	// public void send(String str) {
-	// 	try {
-	// 		byte[] bytes = encryption.encryptData(str);
-	// 		this.out.writeObject(bytes);
-	// 		this.out.flush();
-	// 	} catch (java.net.SocketException e) {
-	// 		System.out.println("Lost connection");
-	// 	}  catch (Exception e) {
-	// 		e.printStackTrace();
-	// 	}
-	// }
-
 	public Object receive() {
 		try {
 			byte[] bytes = (byte[]) this.in.readObject();
@@ -137,7 +117,7 @@ public class client {
 	public boolean isConnected() {
 		try {
 			// Socket s = new Socket(this.hostName, this.port); 
-			if(new Socket(this.hostName, this.port).isConnected()) 
+			if(this.socket.isConnected()) 
 				return true;
 			else 
 				return false;
