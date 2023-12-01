@@ -217,7 +217,7 @@ public class ClientUI {
 		btnRun.setColorClick(new Color(66, 135, 200));
 		btnRun.setBorderColor(new Color(66, 135, 200));
 		btnRun.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnRun.setIcon(new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\logo\\icons8-video-48.png")
+		btnRun.setIcon(new ImageIcon(new ImageIcon(".\\src\\Client\\ui\\img\\icons8-video-48.png")
 				.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH)));
 		btnRun.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnRun.setPreferredSize(new Dimension(80,30));
@@ -229,7 +229,7 @@ public class ClientUI {
 		});
 		// btnRun.setBounds(630, 30, 80, 25);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.insets = new Insets(35, 530, 0, 0);
+		gbc.insets = new Insets(30, 530, 0, 0);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		layout.setConstraints(btnRun, gbc);
@@ -290,7 +290,7 @@ public class ClientUI {
 		});
 		// btnSave.setBounds(720, 30, 80, 25);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.insets = new Insets(35, 620, 0, 0);
+		gbc.insets = new Insets(30, 620, 0, 0);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		layout.setConstraints(btnSave, gbc);
@@ -343,7 +343,7 @@ public class ClientUI {
 		});
 		// btnUpload.setBounds(810, 30, 100, 25);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.insets = new Insets(35, 730, 0, 0);
+		gbc.insets = new Insets(30, 730, 0, 0);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		layout.setConstraints(btnUpload, gbc);
@@ -380,7 +380,7 @@ public class ClientUI {
 		cb.setPreferredSize(new Dimension(120,30));
 		cb.setMinimumSize(cb.getPreferredSize());
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.insets = new Insets(40, 0, 0, 0);
+		gbc.insets = new Insets(30, 0, 0, 0);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		layout.setConstraints(cb, gbc);

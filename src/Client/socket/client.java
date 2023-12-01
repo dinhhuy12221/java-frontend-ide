@@ -34,7 +34,6 @@ public class client {
 			this.out = new ObjectOutputStream(this.socket.getOutputStream());
 			this.in = new ObjectInputStream(this.socket.getInputStream());
 			generateKey();
-			System.out.println(1);
 		} catch (ConnectException e) {
 			System.out.println("[Notification] Diconnect to server");
 		} catch (Exception e) {
@@ -116,14 +115,10 @@ public class client {
 
 	public boolean isConnected() {
 		try {
-			// Socket s = new Socket(this.hostName, this.port); 
-			if(this.socket.isConnected()) 
+			if (this.socket.isConnected() && !this.socket.isClosed())
 				return true;
-			else 
-				return false;
 		} catch (Exception e) {
-			// TODO: handle exception
-			return false;
 		}
+		return false;
 	}
 }
