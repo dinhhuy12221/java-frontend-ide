@@ -1,18 +1,22 @@
-## Getting Started
+# Java GUI App for Multi-language Code Formatter & Runner
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## 🎯 Objective
+Build a Java Swing GUI application that allows users to:
+- Write source code in Java, Python, or JavaScript.
+- Choose language and action (Format / Compile or Run).
+- Send code to a backend server via socket.
+- Display formatted code or output/errors in the GUI.
 
-## Folder Structure
+## 🧰 Technologies Used
+- Java Swing (GUI)
+- Java Sockets (TCP client)
+- Backend server (handles formatting and execution)
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## 🧱 Basic Structure
+```plaintext
+Frontend GUI (Java)
+ ├── Language selector (Java, Python, JS)
+ ├── Code editor (multi-line input)
+ ├── Action buttons: Format / Run
+ ├── Connects to backend via socket
+ └── Displays response from server
